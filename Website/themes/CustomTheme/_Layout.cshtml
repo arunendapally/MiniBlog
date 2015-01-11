@@ -1,0 +1,159 @@
+﻿@{
+  string next = Blog.GetNextPage();
+  string prev = Blog.GetPrevPage();
+}
+<!doctype html>
+<html lang="en-us">
+<head prefix="og: http://ogp.me/ns#">
+  <meta charset="utf-8" />
+  <title>@Page.Title</title>
+  <meta name="description" content="@Page.Title" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1" />
+
+  <link type="application/rsd+xml" rel="edituri" title="RSD" href="~/views/robots/rsd" />
+  <link type="application/rss+xml" rel="alternate" title="@Blog.Title" href="~/feed/rss/" />
+  <link type="application/atom+xml" rel="alternate" title="@Blog.Title" href="~/feed/atom/" />
+
+  <link href="~/css/bootstrap.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="@Blog.FingerPrint("/themes/" + Blog.Theme + "/site.css")" />
+  <link rel="shortcut icon" href="@Blog.FingerPrint("/favicon.ico")" type="image/x-icon" />
+  <link rel="dns-prefetch" href="http://gravatar.com/" />
+
+  @AdminCss()
+
+  <meta name="application-name" content="@Blog.Title" />
+  <meta name="msapplication-TileColor" content="#ffffff" />
+
+  <meta property="og:title" content="@Page.Title" />
+  <meta property="og:image" content="@Blog.Image" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="@(Request.Url.Scheme +"://" + Request.Url.Authority + Request.RawUrl)" />
+  @if (!string.IsNullOrEmpty(prev))
+  {
+    <link rel="prev" href="@prev" />
+  }
+  @if (!string.IsNullOrEmpty(next))
+  {
+    <link rel="next" href="@next" />
+  }
+
+  <link href='http://fonts.googleapis.com/css?family=Roboto:500,400' rel='stylesheet' type='text/css'>
+</head>
+<body itemscope itemtype="http://schema.org/Blog" class="@(User.Identity.IsAuthenticated ? "admin": null)">
+
+  <div class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <a class="navbar-brand" href="~/">@Blog.Title</a>
+        <button data-target="#navbar-main" data-toggle="collapse" type="button" class="navbar-toggle">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+      </div>
+      <div id="navbar-main" class="navbar-collapse collapse">
+        <ul class="nav navbar-nav">
+          <li class="dropdown">
+            <a data-toggle="dropdown" class="dropdown-toggle" role="button" href="#">Categories <b class='caret'></b></a>
+            <ul role="menu" class="dropdown-menu">
+              @foreach (var cat in Blog.GetCategories())
+              {
+                <li><a href="~/category/@HttpUtility.UrlEncode(cat.Key.ToLowerInvariant())">@cat.Key</a></li>
+              }
+            </ul>
+          </li>
+          <li><a target="_blank" href="~/feed/rss/">RSS</a></li>
+          <li><a target="_blank" href="https://www.facebook.com/arunendapally">Facebook</a></li>
+          <li><a target="_blank" href="https://twitter.com/arunendapally">Twitter</a></li>
+          <li><a href="~/views/Search.cshtml">Search</a></li>
+        </ul>
+        @*<form class="navbar-form navbar-right">
+            <input type="text" class="form-control" placeholder="Search">
+          </form>*@
+      </div>
+    </div>
+  </div>
+
+  <div class="main container">
+    <div class="row">
+      <div class="col-md-8">
+        @RenderBody()
+        @if (Page.ShowPaging != null)
+        {
+          <ul class="pager">
+            @if (Blog.GetPosts().Count() > Blog.PostsPerPage * Blog.CurrentPage)
+            {
+              <li class="previous"><a href="@Blog.GetPagingUrl(1)" rel="prev">&larr; Older</a></li>
+            }
+
+            @if (Blog.CurrentPage > 1)
+            {
+              <li class="next"><a href="@Blog.GetPagingUrl(-1)" rel="next">Newer &rarr;</a></li>
+            }
+          </ul>
+        }
+      </div>
+      <div style="margin-top:20px" class="col-md-4">
+        <div class="panel panel-primary">
+          <div class="panel-heading">
+            <h3 class="panel-title">About me</h3>
+          </div>
+          <div class="panel-body">
+            I am Arun Endapally, I love coding and blog about them.<br />
+            You can find me on <a href="https://www.facebook.com/arunendapally"><span class="badge" style="font-weight: normal">Facebook</span></a> and <a href="https://twitter.com/arunendapally"><span class="badge" style=" font-weight: normal">Twitter</span></a><br />
+            <i style="font-size: small; color: GrayText">Content and opinions in this blog are my own and do not represent my employer.</i>
+          </div>
+        </div>
+        <div class="panel panel-primary">
+          <div class="panel-heading">
+            <h3 class="panel-title">Categories</h3>
+          </div>
+          <div class="panel-body">
+            <ul class="list-unstyled">
+              @foreach (var cat in Blog.GetCategories())
+              {
+                <li><a href="~/category/@HttpUtility.UrlEncode(cat.Key.ToLowerInvariant())">@cat.Key <span class="badge">@cat.Value</span></a></li>
+              }
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <footer class="text-center" role="contentinfo" itemscope itemtype="http://schema.org/Person" itemprop="author">
+    @*@if (!User.Identity.IsAuthenticated)
+      {
+        <span class="pull-right">
+          <a href="@FormsAuthentication.LoginUrl?ReturnUrl=@Request.RawUrl">Sign in <i class="glyphicon glyphicon-log-in"></i></a>
+        </span>
+      }*@
+    <span>
+      Copyright &copy; @DateTime.Now.Year
+      <a href="http://arunendapally.com" itemprop="url name">Arun Endapally</a>
+    </span>
+  </footer>
+
+
+  @if ((Blog.CurrentPost != null && Blog.CurrentPost.AreCommentsOpen(Context)) || Blog.IsNewPost)
+  {
+    <script src="@Blog.FingerPrint("/scripts/comments.js")" async defer></script>
+  }
+
+  @if (User.Identity.IsAuthenticated)
+  {
+    @RenderPage("~/views/AdminMenu.cshtml")
+  }
+
+  <script src="https://code.jquery.com/jquery-1.11.2.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+
+</body>
+</html>
+
+@helper AdminCss()
+{
+  if (User.Identity.IsAuthenticated)
+  {
+    <link href="@Blog.FingerPrint("/css/admin.css")" rel="stylesheet" />
+  }
+}
