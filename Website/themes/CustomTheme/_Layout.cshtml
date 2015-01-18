@@ -68,10 +68,9 @@
           <li><a target="_blank" href="https://www.facebook.com/arunendapally">Facebook</a></li>
           <li><a target="_blank" href="http://in.linkedin.com/in/arunendapally">LinkedIn</a></li>
           <li><a target="_blank" href="https://twitter.com/arunendapally">Twitter</a></li>
-          <li><a href="~/views/Search.cshtml">Search</a></li>
         </ul>
         <form class="navbar-form navbar-right" method="get" action="~/views/Search.cshtml">
-          <input name="q" type="text" class="form-control" placeholder="Search">
+          <input name="q" type="text" class="form-control" placeholder="Search this blog">
         </form>
       </div>
     </div>
@@ -139,7 +138,7 @@
 
   @if ((Blog.CurrentPost != null && Blog.CurrentPost.AreCommentsOpen(Context)) || Blog.IsNewPost)
   {
-    <script src="@Blog.FingerPrint("/scripts/comments.js")" async defer></script>
+    <script src="@Blog.FingerPrint("/scripts/comments.min.js")" async defer></script>
   }
 
   @if (User.Identity.IsAuthenticated)
