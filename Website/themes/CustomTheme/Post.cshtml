@@ -2,8 +2,6 @@
   <header class="page-header">
     <h1 itemprop="headline name">
       <a href="@Model.Url" itemprop="url">@Model.Title</a>
-      <a href="https://facebook.com/sharer.php?u=@Model.AbsoluteUrl" target="_blank"><span class="badge">Share</span></a>
-      <a href="https://twitter.com/intent/tweet?url=@Model.AbsoluteUrl&text=@Model.Title&via=arunendapally" target="_blank"><span class="badge">Tweet</span></a>
     </h1>
     <div>
       <abbr title="@Model.PubDate.ToLocalTime()" itemprop="datePublished">@Model.PubDate.ToLocalTime().ToString("MMMM d. yyyy")</abbr>
@@ -12,6 +10,13 @@
         @Model.CountApprovedComments(Context) Comments
       </a>
       @Categories()
+    </div>
+    <div style="margin-bottom: 0;">
+      <ul style="margin-bottom: 0;" class="list-inline">
+        <li style="padding-right:0;"><a style="margin-left: 0;" class="social facebook" href="https://facebook.com/sharer.php?u=@Model.AbsoluteUrl" target="_blank"></a></li>
+        <li style="padding:0;"><a class="social linkedin" href="http://www.linkedin.com/shareArticle?mini=true&url=@Model.AbsoluteUrl&title=@Model.Title" target="_blank"></a></li>
+        <li style="padding:0;"><a class="social twitter" href="https://twitter.com/intent/tweet?url=@Model.AbsoluteUrl&text=@Model.Title&via=arunendapally" target="_blank"></a></li>
+      </ul>
     </div>
   </header>
   @if ((Blog.CurrentPost != null || Blog.IsNewPost) && User.Identity.IsAuthenticated)
@@ -22,7 +27,16 @@
     </div>
   }
 
-  <div itemprop="articleBody">@Html.Raw(Blog.IsEditing ? Model.Content : Model.GetHtmlContent())</div>
+  <div itemprop="articleBody">
+    @Html.Raw(Blog.IsEditing ? Model.Content : Model.GetHtmlContent())
+    <div style="margin: 0; text-align: center">
+      <ul style="margin-bottom: 0;" class="list-inline">
+        <li><a class="social facebook" href="https://facebook.com/sharer.php?u=@Model.AbsoluteUrl" target="_blank"></a></li>
+        <li><a class="social linkedin" href="http://www.linkedin.com/shareArticle?mini=true&url=@Model.AbsoluteUrl&title=@Model.Title" target="_blank"></a></li>
+        <li><a class="social twitter" href="https://twitter.com/intent/tweet?url=@Model.AbsoluteUrl&text=@Model.Title&via=arunendapally" target="_blank"></a></li>
+      </ul>
+    </div>
+  </div>
 
   @if (Blog.CurrentPost != null)
   {
@@ -47,6 +61,8 @@
     }
   }
 </article>
+
+
 
 @helper Categories()
 {

@@ -1,5 +1,27 @@
-﻿body {
-  font-family: 'Roboto', sans-serif;
+﻿.social {
+  background: url('social.png');
+  width: 32px;
+  height: 32px;
+  display: inline-block;
+  background-repeat: no-repeat;
+}
+
+
+.facebook {
+  background-position: -0px -0px;
+}
+
+.linkedin {
+  background-position: -0px -42px;
+}
+
+.twitter {
+  background-position: -0px -84px;
+}
+
+body {
+  font-family: "Roboto",Helvetica,sans-serif;
+  font-size: 15px;
 }
 
 h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
