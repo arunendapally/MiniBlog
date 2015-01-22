@@ -5,3 +5,5 @@
 
 ga('create', 'UA-58446363-1', 'auto');
 ga('send', 'pageview');
+
+$("img").addClass("img-responsive");
