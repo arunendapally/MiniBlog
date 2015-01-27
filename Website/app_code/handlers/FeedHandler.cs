@@ -56,6 +56,7 @@ public class FeedHandler : IHttpHandler
         }
 
         context.Response.ContentType = "application/rss+xml";
+        feed.Categories.Add(new SyndicationCategory("CodeProject"));
         return new Rss20FeedFormatter(feed);
     }
 
