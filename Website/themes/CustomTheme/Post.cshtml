@@ -11,13 +11,7 @@
       </a>
       @Categories()
     </div>
-    <div style="margin-bottom: 0;">
-      <ul style="margin-bottom: 0;" class="list-inline">
-        <li style="padding-right:0;"><a style="margin-left: 0;" class="social facebook img-circle" href="https://facebook.com/sharer.php?u=@Model.AbsoluteUrl" target="_blank"></a></li>
-        <li style="padding:0;"><a class="social linkedin img-circle" href="http://www.linkedin.com/shareArticle?mini=true&url=@Model.AbsoluteUrl&title=@Model.Title" target="_blank"></a></li>
-        <li style="padding:0;"><a class="social twitter img-circle" href="https://twitter.com/intent/tweet?url=@Model.AbsoluteUrl&text=@Model.Title&via=arunendapally" target="_blank"></a></li>
-      </ul>
-    </div>
+    @RenderPage("SocialSharing.cshtml", new { IsEditing = Blog.IsEditing, AbsoluteUrl = Model.AbsoluteUrl, Title = Model.Title })
   </header>
   @if ((Blog.CurrentPost != null || Blog.IsNewPost) && User.Identity.IsAuthenticated)
   {
@@ -29,13 +23,9 @@
 
   <div itemprop="articleBody">
     @Html.Raw(Blog.IsEditing ? Model.Content : Model.GetHtmlContent())
-    <div style="margin: 0; text-align: center">
-      <ul style="margin-bottom: 0;" class="list-inline">
-        <li><a class="social facebook img-circle" href="https://facebook.com/sharer.php?u=@Model.AbsoluteUrl" target="_blank"></a></li>
-        <li><a class="social linkedin img-circle" href="http://www.linkedin.com/shareArticle?mini=true&url=@Model.AbsoluteUrl&title=@Model.Title" target="_blank"></a></li>
-        <li><a class="social twitter img-circle" href="https://twitter.com/intent/tweet?url=@Model.AbsoluteUrl&text=@Model.Title&via=arunendapally" target="_blank"></a></li>
-      </ul>
-    </div>
+    <center>
+      @RenderPage("SocialSharing.cshtml", new { IsEditing = Blog.IsEditing, AbsoluteUrl = Model.AbsoluteUrl, Title = Model.Title })
+    </center>
   </div>
 
   @if (Blog.CurrentPost != null)

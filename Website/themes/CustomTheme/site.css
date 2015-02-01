@@ -1,11 +1,26 @@
-﻿.social {
+﻿.sharing {
+  margin-bottom: 0;
+}
+
+  .sharing li {
+    width: 60px;
+    margin-right: 5px;
+  }
+
+  .sharing span {
+    padding-left: 36px;
+    line-height: 32px;
+    display: inline-block;
+    vertical-align: middle;
+  }
+
+.social {
   background: url('social.png');
   width: 32px;
   height: 32px;
   display: inline-block;
   background-repeat: no-repeat;
 }
-
 
 .facebook {
   background-position: -0px -0px;

@@ -1,0 +1,65 @@
+﻿@if (!Convert.ToBoolean(PageData["IsEditing"]))
+{
+  string url = Convert.ToString(PageData["absoluteurl"]);
+  string title = Convert.ToString(PageData["title"]);
+  <ul class="list-inline sharing">
+    <li>
+      <a class="img-circle social facebook" href='https://facebook.com/sharer.php?u=@url' target="_blank">
+        <span>
+          @GetCount(url, "facebook")
+        </span>
+      </a>
+    </li>
+    <li>
+      <a class="img-circle social linkedin" href='http://www.linkedin.com/shareArticle?mini=true&url=@url&title=@title' target="_blank">
+        <span>
+          @GetCount(url, "linkedIn")
+        </span>
+      </a>
+    </li>
+    <li>
+      <a class="img-circle social twitter" href='https://twitter.com/intent/tweet?url=@url&title=@title&via=arunendapally' target="_blank">
+        <span>
+          @GetCount(url, "twitter")
+        </span>
+      </a>
+    </li>
+  </ul>
+}
+@functions {
+  private string GetCount(string url, string website)
+  {
+    string facebook = "http://graph.facebook.com/?id={0}";
+    string twitter = "https://cdn.api.twitter.com/1/urls/count.json?url={0}";
+    string linkedIn = "https://www.linkedin.com/countserv/count/share?url={0}&format=json";
+    string shareUrl = "";
+    switch (website)
+    {
+      case "facebook":
+        shareUrl = string.Format(facebook, url);
+        break;
+      case "twitter":
+        shareUrl = string.Format(twitter, url);
+        break;
+      case "linkedIn":
+        shareUrl = string.Format(linkedIn, url);
+        break;
+    }
+    using (WebClient client = new WebClient())
+    {
+      try
+      {
+        string result = client.DownloadString(shareUrl);
+        if (website == "facebook")
+        {
+          return Convert.ToString(Json.Decode(result).shares);
+        }
+        return Convert.ToString(Json.Decode(result).count);
+      }
+      catch
+      {
+        return "0";
+      }      
+    }
+  }
+}
