@@ -33,7 +33,7 @@
 @functions {
   private string GetCount(string url, string website)
   {
-    string facebook = "http://graph.facebook.com/?id={0}";
+    string facebook = "http://graph.facebook.com/?id=http://www.arunendapally.com/post/protect-your-source-code-from-decompiling-or-reverse-engineering";
     string twitter = "https://cdn.api.twitter.com/1/urls/count.json?url={0}";
     string linkedIn = "https://www.linkedin.com/countserv/count/share?url={0}&format=json";
     string shareUrl = "";
@@ -56,7 +56,7 @@
         string result = client.DownloadString(shareUrl);
         if (website == "facebook")
         {
-          return Convert.ToString(Json.Decode(result).shares);
+          return Convert.ToString(string.IsNullOrEmpty(Json.Decode(result).shares) ? "0" : Json.Decode(result).shares);
         }
         return Convert.ToString(Json.Decode(result).count);
       }
