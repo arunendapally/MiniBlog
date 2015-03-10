@@ -76,10 +76,19 @@
               }
             </ul>
           </li>
-          <li><a target="_blank" href="~/feed/rss/">RSS</a></li>
+          <li class="dropdown">
+            <a data-toggle="dropdown" class="dropdown-toggle" role="button" href="#">Recent <b class='caret'></b></a>
+            <ul role="menu" class="dropdown-menu">
+              @foreach (var recent in Blog.GetPosts().Take(5))
+              {
+                <li><a href="@recent.AbsoluteUrl">@recent.Title</a></li>
+              }
+            </ul>
+          </li>
+          @*<li><a target="_blank" href="~/feed/rss/">RSS</a></li>
           <li><a target="_blank" href="https://www.facebook.com/arunendapally">Facebook</a></li>
           <li><a target="_blank" href="http://in.linkedin.com/in/arunendapally">LinkedIn</a></li>
-          <li><a target="_blank" href="https://twitter.com/arunendapally">Twitter</a></li>
+          <li><a target="_blank" href="https://twitter.com/arunendapally">Twitter</a></li>*@
         </ul>
         <form class="navbar-form navbar-right" method="get" action="~/views/Search.cshtml">
           <input name="q" type="text" class="form-control" placeholder="Search this blog">
