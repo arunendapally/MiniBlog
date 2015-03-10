@@ -77,7 +77,7 @@
             </ul>
           </li>
           <li class="dropdown">
-            <a data-toggle="dropdown" class="dropdown-toggle" role="button" href="#">Recent <b class='caret'></b></a>
+            <a data-toggle="dropdown" class="dropdown-toggle" role="button" href="#">Recent Posts <b class='caret'></b></a>
             <ul role="menu" class="dropdown-menu">
               @foreach (var recent in Blog.GetPosts().Take(5))
               {
@@ -138,6 +138,19 @@
               @foreach (var cat in Blog.GetCategories())
               {
                 <li><a href="~/category/@HttpUtility.UrlEncode(cat.Key.ToLowerInvariant())">@cat.Key <span class="badge">@cat.Value</span></a></li>
+              }
+            </ul>
+          </div>
+        </div>
+        <div class="panel panel-primary">
+          <div class="panel-heading">
+            <h3 class="panel-title">Recent Posts</h3>
+          </div>
+          <div class="panel-body">
+            <ul class="list-unstyled">
+              @foreach (var recent in Blog.GetPosts().Take(5))
+              {
+                <li><a href="@recent.AbsoluteUrl">@recent.Title</a></li>
               }
             </ul>
           </div>
